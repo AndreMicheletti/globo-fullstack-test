@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+
+  api:
+    build: "./news_api/"
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    environment:
+      PORT: 8000
+      MONGO_URL: mongodb://mongodb-service:27017/
+      DATABASE: zedelivery
+    depends_on:
+      - mongodb-service
+    networks:
+      - bridge-network
+    links:
+      - mongodb-service
+
+  front:
+    build: "./news_front/"
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      BACKEND_URL: http://api:5000/
+    depends_on:
+      - api
+
+  mongodb-service:
+    image: mongo
+    environment:
+      MONGO_DATA_DIR: /data/db
+      MONGO_LOG_DIR: /dev/null
+      MONGODB_USER: "zedlvry"
+      MONGODB_PASS: "passZE"
+    volumes:
+      - data01:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - bridge-network
+
+volumes:
+  data01:
+    driver: local
+
+networks:
+  bridge-network:
+    driver: bridge

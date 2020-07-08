@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+requests
+pymongo
+dnspython
+pytest
+pytest-mongo
+pytest-cov
+pytest-sugar
