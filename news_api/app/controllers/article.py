@@ -64,3 +64,15 @@ def update_article_by_id(
         )
     else:
         return None
+
+
+def delete_article_by_id(article_id: str) -> bool:
+
+    collection = Article.collection()
+    article_id = ensure_object_id(article_id)
+
+    resp = collection.delete_one(
+        dict(_id=article_id)
+    )
+
+    return resp.deleted_count == 1

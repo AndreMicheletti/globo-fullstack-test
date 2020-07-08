@@ -39,4 +39,7 @@ def update_article(article_id: str, article_args: ArticleInput):
 
 @router.delete("/{article_id}", status_code=status.HTTP_200_OK)
 def delete_article(article_id: str):
-    pass
+    deleted = ctr.delete_article_by_id(article_id)
+    if not deleted:
+        raise HTTPException(404, detail="Article not found with this id")
+    return {"deleted": True}
