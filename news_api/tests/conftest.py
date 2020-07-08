@@ -28,7 +28,7 @@ def mock_article_gen(mongo):
     from app.models.article import ArticleInput
     from app.controllers.article import create_article
 
-    now = datetime.utcnow()
+    now = datetime.utcnow().replace(microsecond=0)
 
     def make_mock(
         title="Test Article",

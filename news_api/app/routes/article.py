@@ -1,3 +1,6 @@
+from typing import List
+
+from fastapi.exceptions import HTTPException
 from fastapi.routing import APIRouter
 from starlette import status
 
@@ -7,14 +10,17 @@ from app.models.article import ArticleInput, Article
 router = APIRouter()
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
+@router.get("/", response_model=List[Article], status_code=status.HTTP_200_OK)
 def list_articles():
-    pass
+    return ctr.get_all_articles()
 
 
-@router.get("/{article_id}", status_code=status.HTTP_200_OK)
+@router.get("/{article_id}", response_model=Article, status_code=status.HTTP_200_OK)
 def get_article(article_id: str):
-    pass
+    article = ctr.get_article_by_id(article_id)
+    if not article:
+        raise HTTPException(404, detail="Article not found with this id")
+    return article
 
 
 @router.post("/", response_model=Article, status_code=status.HTTP_201_CREATED)
