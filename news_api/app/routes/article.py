@@ -29,9 +29,12 @@ def create_article(article_args: ArticleInput):
     return created
 
 
-@router.put("/{article_id}", status_code=status.HTTP_200_OK)
+@router.put("/{article_id}", response_model=Article, status_code=status.HTTP_200_OK)
 def update_article(article_id: str, article_args: ArticleInput):
-    pass
+    updated = ctr.update_article_by_id(article_id, article_args)
+    if not updated:
+        raise HTTPException(404, detail="Article not found with this id")
+    return updated
 
 
 @router.delete("/{article_id}", status_code=status.HTTP_200_OK)

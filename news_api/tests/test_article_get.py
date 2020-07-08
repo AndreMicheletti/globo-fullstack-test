@@ -1,5 +1,7 @@
 from bson import ObjectId
+
 from app.models.article import Article
+
 
 def test_get_article_exist(client, mock_article):
 
