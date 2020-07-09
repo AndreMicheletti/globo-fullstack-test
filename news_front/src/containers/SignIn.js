@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+
+import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+import { connect } from 'react-redux'
+
+import * as actions from '../actions/authActions'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,23 +36,35 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  feedback: {
+    margin: theme.spacing(3),
+  }
 }));
 
 
-export default function SignIn() {
+function SignIn (props) {
   const classes = useStyles();
+
+  const [user, setUser] = useState("")
+  const [pass, setPass] = useState("")
+
+  const { loading, error, authToken, loginAction } = props;
+
+  const onSubmit = () => {
+    loginAction(user, pass)
+  }
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
 
       <div className={classes.paper}>
-          
+
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Autenticação
         </Typography>
 
         <form className={classes.form} noValidate>
@@ -58,11 +74,13 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Usuário"
+            name="username"
+            autoComplete="username"
+            disabled={loading}
             autoFocus
+            onChange={(event) => setUser(event.target.value)}
           />
           <TextField
             variant="outlined"
@@ -73,25 +91,45 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
+            disabled={loading}
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            onChange={(event) => setPass(event.target.value)}
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
+            disabled={loading}
             className={classes.submit}
+            onClick={async () => {
+                await onSubmit()
+            }}
           >
-            Sign In
+            Entrar
           </Button>
 
         </form>
+
+        {!!error && (
+            <Typography component="h1" variant="h5" color="secondary">
+                {error}
+            </Typography>
+        )}
+        
       </div>
+      
+      {loading && <LinearProgress className={classes.feedback} />}
 
     </Container>
   );
 }
+
+const mapStateToProps = state => {
+    return state.auth
+}
+
+const mapDispatchToProps = dispatch => ({
+    loginAction: (username, password) => dispatch(actions.submitLogin(username, password))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

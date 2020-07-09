@@ -7,9 +7,6 @@ from app.utils import ensure_object_id
 
 
 def create_article(article_input: ArticleInput) -> Article:
-    from time import sleep
-
-    sleep(3)
 
     collection = Article.collection()
     document = article_input.dict()

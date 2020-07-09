@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios'
 import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -19,7 +18,8 @@ import renderers from '../utils/markdownRenderers'
 import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
-import { BACKEND_URL } from '../const'
+
+import api from '../service'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -93,11 +93,11 @@ const ArticlePaper = ({ article, onRemove, onEdit, onError }) => {
 
     const deleteArticle = async () => {
 
-        const url = BACKEND_URL + "/article/" + article.id
+        const url = "article/" + article.id
         setLoading(true)
     
         try {
-            const response = await axios.delete(url)
+            const response = await api.delete(url)
         } catch (e) {
             console.warn("DELETE FAILED!!")
             console.warn(e)
@@ -110,10 +110,10 @@ const ArticlePaper = ({ article, onRemove, onEdit, onError }) => {
     const editArticle = async () => {
 
         setLoading(true)
-        const url = BACKEND_URL + "/article/" + article.id
+        const url = "article/" + article.id
 
         try {
-            const response = await axios.put(url, { title, content: markdownValue })
+            const response = await api.put(url, { title, content: markdownValue })
         } catch (e) {
             console.warn("UPDATE FAILED!!")
             console.warn(e)

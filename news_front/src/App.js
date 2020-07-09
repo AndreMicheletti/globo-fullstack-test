@@ -18,6 +18,11 @@ import store from './store'
 
 import ArticleDashboard from './containers/ArticleDashboard'
 import ArticleCreateForm from './containers/ArticleCreateForm'
+import SignIn from './containers/SignIn';
+
+import { connect } from 'react-redux'
+
+import * as actions from './actions/authActions'
 
 
 function Alert(props) {
@@ -59,7 +64,7 @@ function TabPanel(props) {
 }
 
 
-function App() {
+function ProvidedAppComponent(props) {
   const classes = useStyles();
   const [tab, setTab] = useState(0);
 
@@ -85,45 +90,72 @@ function App() {
     showMessage("Artigo inserido com sucesso!")
   }
 
+  const { authToken, performLogout } = props;
+
+  if (!authToken) {
+    return <SignIn />
+  }
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <CssBaseline />
+        <Toolbar>
+
+          <Typography variant="h6" className={classes.title}>
+            Artigos - Editora Globo
+          </Typography>
+
+          <Tabs className={classes.tabs} value={tab} onChange={handleChange} aria-label="tabs-toolbar">
+            <Tab label="Listar" id="list" aria-controls="simple-tabpanel-0"/>
+            <Tab label="Criar" id="create" aria-controls="simple-tabpanel-1"/>
+          </Tabs>
+
+          <Button 
+            color="inherit"
+            onClick={() => {
+              props.performLogout()
+            }}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+
+      </AppBar>
+
+      <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={alertMessage.severity}>
+          {alertMessage.text}
+        </Alert>
+      </Snackbar>
+
+      <TabPanel value={tab} index={0}>
+        <ArticleDashboard showMessage={showMessage} />
+      </TabPanel>
+      <TabPanel value={tab} index={1}>
+        <ArticleCreateForm onSave={onSave} showMessage={showMessage} />
+      </TabPanel>
+
+    </div>
+  );
+}
+
+const mapStateToProps = state => {
+  return state.auth
+}
+
+const mapDispatchToProps = dispatch => ({
+  performLogout: () => dispatch(actions.performLogout())
+})
+
+const ProvidedApp = connect(mapStateToProps, mapDispatchToProps)(ProvidedAppComponent)
+
+function App() {
   return (
     <Provider store={store}>
-
-      <div className={classes.root}>
-        <AppBar position="static">
-          <CssBaseline />
-          <Toolbar>
-
-            <Typography variant="h6" className={classes.title}>
-              Artigos - Editora Globo
-            </Typography>
-
-            <Tabs className={classes.tabs} value={tab} onChange={handleChange} aria-label="tabs-toolbar">
-              <Tab label="Listar" id="list" aria-controls="simple-tabpanel-0"/>
-              <Tab label="Criar" id="create" aria-controls="simple-tabpanel-1"/>
-            </Tabs>
-
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-
-        </AppBar>
-
-        <Snackbar open={alertOpen} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity={alertMessage.severity}>
-            {alertMessage.text}
-          </Alert>
-        </Snackbar>
-
-        <TabPanel value={tab} index={0}>
-          <ArticleDashboard showMessage={showMessage} />
-        </TabPanel>
-        <TabPanel value={tab} index={1}>
-          <ArticleCreateForm onSave={onSave} showMessage={showMessage} />
-        </TabPanel>
-
-      </div>
-      
+      <ProvidedApp />
     </Provider>
-  );
+  )
 }
 
 export default App;

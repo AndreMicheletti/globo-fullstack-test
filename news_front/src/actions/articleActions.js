@@ -1,6 +1,5 @@
 import { BACKEND_URL } from '../const'
-import axios from 'axios'
-
+import api from '../service'
 
 import {
     ARTICLE_GET_ALL_REQUEST,
@@ -15,7 +14,7 @@ import {
 export const articleGetAll = () => {
     return async dispatch => {
 
-        const url = BACKEND_URL + "/article/"
+        const url = "article/"
 
         dispatch({
             type: ARTICLE_GET_ALL_REQUEST,
@@ -23,7 +22,7 @@ export const articleGetAll = () => {
         })
 
         try {
-            const response = await axios.get(url)
+            const response = await api.get(url)
             
             console.log(response)
 
@@ -47,7 +46,7 @@ export const articleGetAll = () => {
 export const articlePost = (title, content) => {
     return async dispatch => {
 
-        const url = BACKEND_URL + "/article/"
+        const url = "article/"
 
         dispatch({
             type: ARTICLE_POST_REQUEST,
@@ -55,7 +54,7 @@ export const articlePost = (title, content) => {
         })
 
         try {
-            const response = await axios.post(url, {
+            const response = await api.post(url, {
                 title, content
             })
 
