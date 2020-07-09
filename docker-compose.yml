@@ -11,7 +11,7 @@ services:
     environment:
       PORT: 8000
       MONGO_URL: mongodb://mongodb-service:27017/
-      DATABASE: zedelivery
+      DATABASE: globo
     depends_on:
       - mongodb-service
     networks:
@@ -37,8 +37,8 @@ services:
     environment:
       MONGO_DATA_DIR: /data/db
       MONGO_LOG_DIR: /dev/null
-      MONGODB_USER: "zedlvry"
-      MONGODB_PASS: "passZE"
+      MONGODB_USER: "globousr"
+      MONGODB_PASS: "senha12ASDfhi5df"
     volumes:
       - data01:/data/db
     ports:
