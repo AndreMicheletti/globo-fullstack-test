@@ -26,9 +26,9 @@
 
 O projeto possui dois serviços:
 
- - uma `API REST` disponível em [localhost:8000](localhost:8000)
-   - documentação Swagger disponível em [localhost:8000/docs](localhost:8000/docs)
- - um frontend `React` disponível em [localhost:3000](localhost:3000)
+ - uma `API REST` disponível em localhost:8000
+   - documentação Swagger disponível em localhost:8000/docs
+ - um frontend `React` disponível em localhost:3000
 
 As rotas `/article` estão protegidas por OAuth2 e 
 para acessar é necessário login e senha.
