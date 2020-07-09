@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Container from '@material-ui/core/Container';
+
 
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
@@ -62,38 +64,45 @@ const ArticleCreateForm = (props) => {
 
 
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            <TextField 
-                id="title" 
-                label="Título" 
-                variant="outlined"
-                value={title}
-                onChange={handleTitle}
-                className={classes.titleInput}
-                disabled={loading}
-            />
-            <ReactMde
-                value={markdownValue}
-                onChange={setMarkdown}
-                selectedTab={selectedTab}
-                onTabChange={setSelectedTab}
-                generateMarkdownPreview={markdown => Promise.resolve(converter.makeHtml(markdown))}
-                maxEditorHeight={350}
-                disabled={loading}
-            />
+        <Container maxWidth="md">
+            <form className={classes.root} noValidate autoComplete="off">
+                <TextField 
+                    id="title" 
+                    label="Título" 
+                    variant="outlined"
+                    value={title}
+                    onChange={handleTitle}
+                    className={classes.titleInput}
+                    disabled={loading}
+                />
+                <ReactMde
+                    value={markdownValue}
+                    onChange={setMarkdown}
+                    selectedTab={selectedTab}
+                    onTabChange={setSelectedTab}
+                    generateMarkdownPreview={markdown => Promise.resolve(converter.makeHtml(markdown))}
+                    maxEditorHeight={350}
+                    disabled={loading}
+                />
 
-            <Button
-                variant="contained"
-                color="primary"
-                className={classes.saveButton}
-                endIcon={<SaveIcon />}
-                disabled={loading}
-                onClick={save}
-            >
-                Salvar
-            </Button>
-            {loading && <LinearProgress />}
-        </form>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.saveButton}
+                    endIcon={<SaveIcon />}
+                    disabled={loading}
+                    onClick={save}
+                >
+                    Salvar
+                </Button>
+                {loading && (
+                    <React.Fragment>
+                        <div style={{ height: 20 }} />
+                        <LinearProgress />
+                    </React.Fragment>
+                )}
+            </form>
+        </Container>
     )
 }
 

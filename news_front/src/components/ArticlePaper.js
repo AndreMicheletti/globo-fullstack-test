@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'
+import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
@@ -25,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     root: {
       minWidth: 275,
     },
+    cardContent: {
+        maxHeight: 390
+    },
     title: {
         marginBottom: 12,
     },
@@ -34,23 +38,40 @@ const useStyles = makeStyles((theme) => ({
     divider: {
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2)
+    },
+    textContent: {
+        height: 200,
+        overflow: 'auto'
+    },
+    date: {
+        marginTop: theme.spacing(8)
     }
 }));
 
 
 const renderContent = (article, classes) => {
+    const published = moment(article.published_at).format("d/M/YYYY, HH:mm:ss")
+    console.log(published)
     return (
         <React.Fragment>
             <Typography variant="h5" className={classes.title} component="h2">
                 {article.title}
             </Typography>
             <Divider />
-            <Typography variant="body2" component="p">
+            <Typography
+                className={classes.textContent}
+                variant="body2"
+                component="p"
+            >
                 <ReactMarkdown
                     source={article.content}
                     renderers={renderers}
                     escapeHtml={false}
-                />
+                />            
+            </Typography>
+            <Divider />
+            <Typography className={classes.date} variant="caption">
+                Publicado em {published}
             </Typography>
         </React.Fragment>
     )
@@ -108,7 +129,7 @@ const ArticlePaper = ({ article, onRemove, onEdit, onError }) => {
     return (
         <Card className={classes.root}>
             {loading && <LinearProgress />}
-            <CardContent>
+            <CardContent className={classes.cardContent}>
                 {!editing && renderContent(article, classes)}
                 {editing && (
                     <form noValidate autoComplete="off">
