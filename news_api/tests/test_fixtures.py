@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from app.models.article import Article
-
 from bson import ObjectId
+
+from app.models.article import Article
 
 
 def test_client_fixture(client):

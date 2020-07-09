@@ -7,3 +7,7 @@ pytest
 pytest-mongo
 pytest-cov
 pytest-sugar
+pyjwt
+passlib
+bcrypt
+python-multipart

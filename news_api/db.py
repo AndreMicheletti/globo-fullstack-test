@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 
 MONGO_URL = os.getenv("MONGO_URL", None)
-DATABASE_NAME = os.getenv("DATABASE", "zedelivery")
+DATABASE_NAME = os.getenv("DATABASE", "globo")
 
 
 client = MongoClient(MONGO_URL)

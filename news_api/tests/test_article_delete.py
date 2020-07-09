@@ -14,6 +14,7 @@ def test_delete_article_exist(client, mock_article_gen):
 
     resp = client.delete(f"/article/{article1.id}")
 
+    print(resp.json())
     assert resp.status_code == 200
     assert collection.count_documents({}) == 1
 

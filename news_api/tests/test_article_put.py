@@ -1,7 +1,7 @@
 from bson import ObjectId
 
-from app.models.article import Article
 from app.controllers.article import get_article_by_id
+from app.models.article import Article
 
 
 def test_put_article_exist(client, mock_article):

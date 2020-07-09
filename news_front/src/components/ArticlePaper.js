@@ -98,7 +98,6 @@ const ArticlePaper = ({ article, onRemove, onEdit, onError }) => {
     
         try {
             const response = await axios.delete(url)
-            console.log(response)
         } catch (e) {
             console.warn("DELETE FAILED!!")
             console.warn(e)
@@ -115,7 +114,6 @@ const ArticlePaper = ({ article, onRemove, onEdit, onError }) => {
 
         try {
             const response = await axios.put(url, { title, content: markdownValue })
-            console.log(response)
         } catch (e) {
             console.warn("UPDATE FAILED!!")
             console.warn(e)

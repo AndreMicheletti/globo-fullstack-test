@@ -5,10 +5,24 @@ from fastapi.testclient import TestClient
 
 
 @pytest.fixture(scope='function')
-def client(mongo):
+def client(mongo, logged_user):
     from main import create_app
     app = create_app()
-    return TestClient(app)
+    client = TestClient(app)
+    client.headers.update({
+        "Authorization": "testauth"
+    })
+    return client
+
+
+@pytest.fixture(scope='function')
+def logged_user(monkeypatch):
+    import auth
+
+    def mocked_get_current_user():
+        return True
+
+    monkeypatch.setattr(auth, "get_current_user", mocked_get_current_user)
 
 
 @pytest.fixture(scope='function')
